@@ -1,0 +1,17 @@
+{% load i18n %}
+<div class="language-switcher mb-3">
+    <form action="{% url 'set_language' %}" method="post" class="d-inline">
+        {% csrf_token %}
+        <input name="next" type="hidden" value="{{ redirect_to }}">
+        <div class="btn-group" role="group" aria-label="{% trans 'Переключение языка' %}">
+            {% get_current_language as LANGUAGE_CODE %}
+            {% get_available_languages as LANGUAGES %}
+            {% for lang_code, lang_name in LANGUAGES %}
+                <button type="submit" name="language" value="{{ lang_code }}"
+                        class="btn btn-sm {% if lang_code == LANGUAGE_CODE %}btn-primary{% else %}btn-outline-primary{% endif %}">
+                    {{ lang_name }}
+                </button>
+            {% endfor %}
+        </div>
+    </form>
+</div>

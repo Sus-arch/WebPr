@@ -1,11 +1,12 @@
+{% load i18n %}
 <header>
     <nav class="navbar navbar-expand-lg bg-light">
         {% with request.resolver_match.view_name as view_name %}
             <div class="container">
                 <nav class="nav nav-pills nav-justified">
-                    <a class="{% if view_name == 'homepage:home' %}nav-item nav-link active {% else %} nav-item nav-link {% endif %}" href="{% url 'homepage:home' %}">Главная</a>
-                    <a class="{% if view_name == 'about:description' %}nav-item nav-link active {% else %} nav-item nav-link {% endif %}" href="{% url 'about:description' %}">О нас</a>
-                    <a class="{% if view_name == 'catalog:product_list' %}nav-item nav-link active {% else %} nav-item nav-link {% endif %}" href="{% url 'catalog:product_list' %}">Каталог</a>
+                    <a class="{% if view_name == 'homepage:home' %}nav-item nav-link active {% else %} nav-item nav-link {% endif %}" href="{% url 'homepage:home' %}">{% trans "Главная" %}</a>
+                    <a class="{% if view_name == 'catalog:product_list' %}nav-item nav-link active {% else %} nav-item nav-link {% endif %}" href="{% url 'catalog:product_list' %}">{% trans "Каталог" %}</a>
+                    <a class="{% if view_name == 'about:description' %}nav-item nav-link active {% else %} nav-item nav-link {% endif %}" href="{% url 'about:description' %}">{% trans "О нас" %}</a>
                 </nav>
             </div>
         {% endwith %}

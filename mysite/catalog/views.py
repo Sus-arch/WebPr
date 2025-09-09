@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from .models import Product
 from .forms import ProductForm
+from django.utils.translation import gettext_lazy as _
 
 
 def product_list(request):
@@ -19,10 +20,10 @@ def product_create(request):
         form = ProductForm(request.POST)
         if form.is_valid():
             product = form.save()
-            messages.success(request, f'Товар "{product.name}" успешно добавлен!')
+            messages.success(request, _('Товар "%(name)s" успешно добавлен!') % {'name': product.name})
             return redirect('catalog:product_detail', pk=product.pk)
         else:
-            messages.error(request, 'Пожалуйста, исправьте ошибки в форме.')
+            messages.error(request, _('Пожалуйста, исправьте ошибки в форме.'))
     else:
         form = ProductForm()
     return render(request, 'catalog/product_form.html', {'form': form})
@@ -34,10 +35,10 @@ def product_edit(request, pk):
         form = ProductForm(request.POST, instance=product)
         if form.is_valid():
             product = form.save()
-            messages.success(request, f'Товар "{product.name}" успешно обновлен!')
+            messages.success(request, _('Товар "%(name)s" успешно обновлен!') % {'name': product.name})
             return redirect('catalog:product_detail', pk=product.pk)
         else:
-            messages.error(request, 'Пожалуйста, исправьте ошибки в форме.')
+            messages.error(request, _('Пожалуйста, исправьте ошибки в форме.'))
     else:
         form = ProductForm(instance=product)
     return render(request, 'catalog/product_form.html', {'form': form, 'product': product})
@@ -48,6 +49,6 @@ def product_delete(request, pk):
     if request.method == 'POST':
         product_name = product.name
         product.delete()
-        messages.success(request, f'Товар "{product_name}" успешно удален!')
+        messages.success(request, _('Товар "%(name)s" успешно удален!') % {'name': product.name})
         return redirect('catalog:product_list')
     return render(request, 'catalog/product_confirm_delete.html', {'product': product})

@@ -1,0 +1,188 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-09-09 23:50+0300\n"
+"PO-Revision-Date: 2025-09-09 23:50+0300\n"
+"Last-Translator: Your Name <email@address>\n"
+"Language-Team: English <en@li.org>\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: .\catalog\forms.py:12 .\catalog\models.py:5
+msgid "Название"
+msgstr "Name"
+
+#: .\catalog\forms.py:13 .\catalog\models.py:6
+msgid "Описание"
+msgstr "Description"
+
+#: .\catalog\forms.py:14 .\catalog\models.py:7
+msgid "Цена"
+msgstr "Price"
+
+#: .\catalog\forms.py:25
+msgid "Цена не может быть отрицательной."
+msgstr "Price cannot be negative."
+
+#: .\catalog\models.py:15
+msgid "Товар"
+msgstr "Product"
+
+#: .\catalog\models.py:16
+msgid "Товары"
+msgstr "Products"
+
+#: .\catalog\views.py:23
+#, python-format
+msgid "Товар \"%(name)s\" успешно добавлен!"
+msgstr "Product \"%(name)s\" has been successfully added!"
+
+#: .\catalog\views.py:26 .\catalog\views.py:41
+msgid "Пожалуйста, исправьте ошибки в форме."
+msgstr "Please correct the errors in the form."
+
+#: .\catalog\views.py:38
+#, python-format
+msgid "Товар \"%(name)s\" успешно обновлен!"
+msgstr "Product \"%(name)s\" has been successfully updated!"
+
+#: .\catalog\views.py:52
+#, python-format
+msgid "Товар \"%(name)s\" успешно удален!"
+msgstr "Product \"%(name)s\" has been successfully deleted!"
+
+#: .\mysite\settings.py:123
+msgid "Russian"
+msgstr "Russian"
+
+#: .\mysite\settings.py:124
+msgid "English"
+msgstr "English"
+
+#: .\templates\about\index.html:5
+msgid "Данный сайт является учебным проектом. Не судите строго :)"
+msgstr "This site is an educational project. Please don't judge too harshly :)"
+
+#: .\templates\base.html:16
+msgid "Интересный сайт"
+msgstr "Interesting Site"
+
+#: .\templates\catalog\product_confirm_delete.html:10
+msgid "Удаление товара"
+msgstr "Product Deletion"
+
+#: .\templates\catalog\product_confirm_delete.html:13
+msgid "Вы уверены, что хотите удалить товар"
+msgstr "Are you sure you want to delete the product"
+
+#: .\templates\catalog\product_confirm_delete.html:17
+msgid "Отмена"
+msgstr "Cancel"
+
+#: .\templates\catalog\product_confirm_delete.html:18
+#: .\templates\catalog\product_detail.html:30
+#: .\templates\catalog\product_list.html:33
+msgid "Удалить"
+msgstr "Delete"
+
+#: .\templates\catalog\product_detail.html:10
+#: .\templates\includes\header.html:8
+msgid "Каталог"
+msgstr "Catalog"
+
+#: .\templates\catalog\product_detail.html:27
+msgid "Редактировать"
+msgstr "Edit"
+
+#: .\templates\catalog\product_detail.html:36
+msgid "Добавлено"
+msgstr "Added"
+
+#: .\templates\catalog\product_detail.html:36
+msgid "Обновлено"
+msgstr "Updated"
+
+#: .\templates\catalog\product_detail.html:43
+msgid "Действия"
+msgstr "Actions"
+
+#: .\templates\catalog\product_detail.html:47
+msgid "Все товары"
+msgstr "All Products"
+
+#: .\templates\catalog\product_detail.html:50
+msgid "Добавить новый"
+msgstr "Add New"
+
+#: .\templates\catalog\product_form.html:11
+msgid "Редактировать товар"
+msgstr "Edit Product"
+
+#: .\templates\catalog\product_form.html:11
+#: .\templates\catalog\product_list.html:9
+msgid "Добавить товар"
+msgstr "Add Product"
+
+#: .\templates\catalog\product_list.html:7
+msgid "Каталог товаров"
+msgstr "Product Catalog"
+
+#: .\templates\catalog\product_list.html:22
+#, python-format
+msgid "%(price)s руб."
+msgstr "%(price)s rub."
+
+#: .\templates\catalog\product_list.html:27
+msgid "Просмотр"
+msgstr "View"
+
+#: .\templates\catalog\product_list.html:30
+msgid "Изменить"
+msgstr "Change"
+
+#: .\templates\catalog\product_list.html:38
+#, python-format
+msgid "Добавлено: %(created_at)s"
+msgstr "Added: %(created_at)s"
+
+#: .\templates\catalog\product_list.html:45
+msgid "Товаров пока нет."
+msgstr "No products yet."
+
+#: .\templates\catalog\product_list.html:45
+msgid "Добавить первый товар"
+msgstr "Add first product"
+
+#: .\templates\homepage\index.html:6
+msgid "Это главная страница"
+msgstr "This is the home page"
+
+#: .\templates\includes\footer.html:5
+msgid "Это подвал сайта"
+msgstr "This is the site footer"
+
+#: .\templates\includes\footer.html:8
+msgid "Если нажать на эту кнопку, вы перейдёте в раздел о нас"
+msgstr "If you click this button, you will go to the about us section"
+
+#: .\templates\includes\footer.html:9 .\templates\includes\header.html:9
+msgid "О нас"
+msgstr "About"
+
+#: .\templates\includes\header.html:7
+msgid "Главная"
+msgstr "Home"
+
+#: .\templates\includes\language_switcher.html:6
+msgid "Переключение языка"
+msgstr "Language switching"

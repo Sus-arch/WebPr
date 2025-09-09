@@ -1,48 +1,48 @@
 {% extends "base.html" %}
-{% load static %}
+{% load i18n static %}
 
 {% block content %}
 <div class="row">
     <div class="col-12 d-flex justify-content-between align-items-center mb-4">
-        <h1>Каталог товаров</h1>
+        <h1>{% trans "Каталог товаров" %}</h1>
         <a href="{% url 'catalog:product_add' %}" class="btn btn-success">
-            <i class="bi bi-plus-circle"></i> Добавить товар
+            <i class="bi bi-plus-circle"></i> {% trans "Добавить товар" %}
         </a>
     </div>
 </div>
 
 <div class="row">
     {% for product in products %}
-    <div class="col-md-4 mb-4">
+    <div class="col-md-6 col-lg-4 mb-4">
         <div class="card h-100">
             <div class="card-body">
-                <h5 class="card-title">
-                    <a href="{% url 'catalog:product_detail' pk=product.pk %}" class="text-decoration-none">
-                        {{ product.name }}
-                    </a>
-                </h5>
+                <h5 class="card-title">{{ product.name }}</h5>
                 <p class="card-text text-muted">{{ product.description|truncatewords:15 }}</p>
-                <div class="d-flex justify-content-between align-items-center">
-                    <span class="h5 mb-0 text-primary">{{ product.price }} руб.</span>
-                    <div>
-                        <a href="{% url 'catalog:product_edit' pk=product.pk %}" class="btn btn-sm btn-outline-secondary me-1">
-                            <i class="bi bi-pencil">Изменить</i>
-                        </a>
-                        <a href="{% url 'catalog:product_detail' pk=product.pk %}" class="btn btn-sm btn-outline-primary">
-                            <i class="bi bi-eye">Подробнее</i>
-                        </a>
-                    </div>
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <span class="h5 mb-0 text-primary">{% blocktrans with price=product.price %}{{ price }} руб.{% endblocktrans %}</span>
+                </div>
+
+                <div class="btn-group w-100" role="group">
+                    <a href="{% url 'catalog:product_detail' pk=product.pk %}" class="btn btn-outline-primary">
+                        <i class="bi bi-eye"></i> {% trans "Просмотр" %}
+                    </a>
+                    <a href="{% url 'catalog:product_edit' pk=product.pk %}" class="btn btn-outline-warning">
+                        <i class="bi bi-pencil"></i> {% trans "Изменить" %}
+                    </a>
+                    <a href="{% url 'catalog:product_delete' pk=product.pk %}" class="btn btn-outline-danger">
+                        <i class="bi bi-trash"></i> {% trans "Удалить" %}
+                    </a>
                 </div>
             </div>
             <div class="card-footer text-muted">
-                Добавлено: {{ product.created_at|date:"d.m.Y" }}
+                <small>{% blocktrans with created_at=product.created_at|date:"d.m.Y" %}Добавлено: {{ created_at }}{% endblocktrans %}</small>
             </div>
         </div>
     </div>
     {% empty %}
     <div class="col-12">
         <div class="alert alert-info" role="alert">
-            Товаров пока нет. <a href="{% url 'catalog:product_add' %}" class="alert-link">Добавить первый товар</a>.
+            {% trans "Товаров пока нет." %} <a href="{% url 'catalog:product_add' %}" class="alert-link">{% trans "Добавить первый товар" %}</a>.
         </div>
     </div>
     {% endfor %}
