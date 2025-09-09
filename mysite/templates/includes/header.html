@@ -5,6 +5,7 @@
                 <nav class="nav nav-pills nav-justified">
                     <a class="{% if view_name == 'homepage:home' %}nav-item nav-link active {% else %} nav-item nav-link {% endif %}" href="{% url 'homepage:home' %}">Главная</a>
                     <a class="{% if view_name == 'about:description' %}nav-item nav-link active {% else %} nav-item nav-link {% endif %}" href="{% url 'about:description' %}">О нас</a>
+                    <a class="{% if view_name == 'catalog:product_list' %}nav-item nav-link active {% else %} nav-item nav-link {% endif %}" href="{% url 'catalog:product_list' %}">Каталог</a>
                 </nav>
             </div>
         {% endwith %}

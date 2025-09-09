@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12 d-flex justify-content-between align-items-center mb-4">
+        <h1>Каталог товаров</h1>
+        <a href="{% url 'catalog:product_add' %}" class="btn btn-success">
+            <i class="bi bi-plus-circle"></i> Добавить товар
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    {% for product in products %}
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <a href="{% url 'catalog:product_detail' pk=product.pk %}" class="text-decoration-none">
+                        {{ product.name }}
+                    </a>
+                </h5>
+                <p class="card-text text-muted">{{ product.description|truncatewords:15 }}</p>
+                <div class="d-flex justify-content-between align-items-center">
+                    <span class="h5 mb-0 text-primary">{{ product.price }} руб.</span>
+                    <div>
+                        <a href="{% url 'catalog:product_edit' pk=product.pk %}" class="btn btn-sm btn-outline-secondary me-1">
+                            <i class="bi bi-pencil">Изменить</i>
+                        </a>
+                        <a href="{% url 'catalog:product_detail' pk=product.pk %}" class="btn btn-sm btn-outline-primary">
+                            <i class="bi bi-eye">Подробнее</i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer text-muted">
+                Добавлено: {{ product.created_at|date:"d.m.Y" }}
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-12">
+        <div class="alert alert-info" role="alert">
+            Товаров пока нет. <a href="{% url 'catalog:product_add' %}" class="alert-link">Добавить первый товар</a>.
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
