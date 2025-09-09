@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block content %}
+    <h1>Это главная страница (´• ω •)</h1>
+    <img src="{% static 'img/cat.jpg' %}" style="width: 50%; height: 50%" alt="тут должен был быть котик, но он исчез">
+    <hr>
+    {% for item in items %}
+        {% include "includes/item_card.html" with full_text=0 %}
+    {% empty %}
+        <p>Ничего не найдено</p>
+    {% endfor %}
+{% endblock %}
