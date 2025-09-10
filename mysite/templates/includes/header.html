@@ -7,6 +7,27 @@
                     <a class="{% if view_name == 'homepage:home' %}nav-item nav-link active {% else %} nav-item nav-link {% endif %}" href="{% url 'homepage:home' %}">{% trans "Главная" %}</a>
                     <a class="{% if view_name == 'catalog:product_list' %}nav-item nav-link active {% else %} nav-item nav-link {% endif %}" href="{% url 'catalog:product_list' %}">{% trans "Каталог" %}</a>
                     <a class="{% if view_name == 'about:description' %}nav-item nav-link active {% else %} nav-item nav-link {% endif %}" href="{% url 'about:description' %}">{% trans "О нас" %}</a>
+
+                    {% if user.is_authenticated %}
+                    <div class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            {{ user.username }}
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{% url 'logout' %}">{% trans "Выйти" %}</a></li>
+                        </ul>
+                    </div>
+                    {% else %}
+                    <div class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            {% trans "Аккаунт" %}
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{% url 'login' %}">{% trans "Войти" %}</a></li>
+                            <li><a class="dropdown-item" href="{% url 'register' %}">{% trans "Регистрация" %}</a></li>
+                        </ul>
+                    </div>
+                    {% endif %}
                 </nav>
             </div>
         {% endwith %}

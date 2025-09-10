@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="mb-0">{% trans "Вход" %}</h3>
+            </div>
+            <div class="card-body">
+                {% for message in messages %}
+                    {% if 'login' in message.tags or 'error' in message.tags %}
+                    <div class="alert alert-{{ message.tags }}">
+                        {{ message }}
+                    </div>
+                    {% endif %}
+                {% endfor %}
+
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="id_username" class="form-label">{% trans "Имя пользователя" %}</label>
+                        <input type="text" class="form-control" id="id_username" name="username" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="id_password" class="form-label">{% trans "Пароль" %}</label>
+                        <input type="password" class="form-control" id="id_password" name="password" required>
+                    </div>
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary">{% trans "Войти" %}</button>
+                    </div>
+                </form>
+                <hr>
+                <div class="text-center">
+                    <p>{% trans "Ещё нет аккаунта?" %} <a href="{% url 'register' %}">{% trans "Зарегистрироваться" %}</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const alerts = document.querySelectorAll('.alert');
+    alerts.forEach(alert => {
+        const alertText = alert.textContent;
+        if (!alertText.includes('Вход') && !alertText.includes('Login') &&
+            !alertText.includes('ошибки') && !alertText.includes('error')) {
+            alert.remove();
+        }
+    });
+});
+</script>
+{% endblock %}

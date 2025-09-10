@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-10 22:00+0300\n"
+"POT-Creation-Date: 2025-09-10 22:27+0300\n"
 "PO-Revision-Date: 2025-09-09 23:50+0300\n"
 "Last-Translator: Your Name <email@address>\n"
 "Language-Team: English <en@li.org>\n"
@@ -52,6 +52,8 @@ msgid "Товар \"%(name)s\" успешно добавлен!"
 msgstr "Product \"%(name)s\" has been successfully added!"
 
 #: .\catalog\views.py:26 .\catalog\views.py:41
+#: .\templates\registration\login.html:14
+#: .\templates\registration\register.html:14
 msgid "Пожалуйста, исправьте ошибки в форме."
 msgstr "Please correct the errors in the form."
 
@@ -65,11 +67,11 @@ msgstr "Product \"%(name)s\" has been successfully updated!"
 msgid "Товар \"%(name)s\" успешно удален!"
 msgstr "Product \"%(name)s\" has been successfully deleted!"
 
-#: .\mysite\settings.py:125
+#: .\mysite\settings.py:126
 msgid "Russian"
 msgstr "Russian"
 
-#: .\mysite\settings.py:126
+#: .\mysite\settings.py:127
 msgid "English"
 msgstr "English"
 
@@ -91,6 +93,7 @@ msgstr "Are you sure you want to delete the product"
 
 #: .\templates\catalog\product_confirm_delete.html:17
 #: .\templates\catalog\product_form.html:46
+#: .\templates\registration\logout_confirm.html:17
 msgid "Отмена"
 msgstr "Cancel"
 
@@ -206,9 +209,103 @@ msgstr "About"
 msgid "Главная"
 msgstr "Home"
 
+#: .\templates\includes\header.html:17
+msgid "Выйти"
+msgstr "Log out"
+
+#: .\templates\includes\header.html:23
+msgid "Аккаунт"
+msgstr "Account"
+
+#: .\templates\includes\header.html:26 .\templates\registration\login.html:42
+#: .\templates\registration\register.html:84
+msgid "Войти"
+msgstr "Sig in"
+
+#: .\templates\includes\header.html:27 .\templates\registration\register.html:9
+msgid "Регистрация"
+msgstr "Registration"
+
 #: .\templates\includes\language_switcher.html:6
 msgid "Переключение языка"
 msgstr "Language switching"
+
+#: .\templates\registration\login.html:9
+msgid "Вход"
+msgstr "Login"
+
+#: .\templates\registration\login.html:34
+#: .\templates\registration\register.html:39
+msgid "Имя пользователя"
+msgstr "Username"
+
+#: .\templates\registration\login.html:38
+#: .\templates\registration\register.html:50
+msgid "Пароль"
+msgstr "Password"
+
+#: .\templates\registration\login.html:47
+msgid "Ещё нет аккаунта?"
+msgstr "Don't have an account yet?"
+
+#: .\templates\registration\login.html:47
+#: .\templates\registration\register.html:79
+#, fuzzy
+#| msgid "Редактировать"
+msgid "Зарегистрироваться"
+msgstr "Edit"
+
+#: .\templates\registration\logout_confirm.html:9
+msgid "Выход из системы"
+msgstr "Exit"
+
+#: .\templates\registration\logout_confirm.html:12
+#, fuzzy
+#| msgid "Вы уверены, что хотите удалить товар"
+msgid "Вы уверены, что хотите выйти?"
+msgstr "Are you sure you want to delete the product"
+
+#: .\templates\registration\logout_confirm.html:16
+#, fuzzy
+#| msgid "Выйти"
+msgid "Да, выйти"
+msgstr "Log out"
+
+#: .\templates\registration\register.html:47
+msgid ""
+"Обязательное поле. Не более 150 символов. Только буквы, цифры и символы @/./"
+"+/-/_."
+msgstr "Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only."
+
+#: .\templates\registration\register.html:60
+msgid "Пароль не должен быть слишком похож на другую вашу личную информацию."
+msgstr "Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only."
+
+#: .\templates\registration\register.html:61
+msgid "Пароль должен содержать как минимум 8 символов."
+msgstr "Your password must contain at least 8 characters."
+
+#: .\templates\registration\register.html:62
+msgid "Пароль не должен быть слишком простым и распространенным."
+msgstr "Your password can't be a commonly used password."
+
+#: .\templates\registration\register.html:63
+#, fuzzy
+#| msgid "Цена не может быть отрицательной."
+msgid "Пароль не может состоять только из цифр."
+msgstr "Your password can't be entirely numeric."
+
+#: .\templates\registration\register.html:68
+msgid "Подтверждение пароля"
+msgstr "Password confirmation"
+
+#: .\templates\registration\register.html:76
+msgid "Для подтверждения введите, пожалуйста, пароль ещё раз."
+msgstr "Enter the same password as before, for verification."
+
+#: .\templates\registration\register.html:84
+msgid "Уже есть аккаунт?"
+msgstr "Already have an account?"
 
 #~ msgid "Действия"
 #~ msgstr "Actions"

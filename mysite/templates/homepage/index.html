@@ -1,10 +1,31 @@
 {% extends "base.html" %}
-{% load i18n static %}
+{% load i18n %}
 {% load static %}
 
 {% block content %}
-    <h1>{% trans "Это главная страница" %} (´• ω •)</h1>
-	<h2>
+<div class="text-center">
+    <h1>{% trans "Добро пожаловать на наш сайт!" %}</h1>
+    <p class="lead">{% trans "Это главная страница" %} (´• ω •)</p>
     <img src="{% static 'img/cat.jpg' %}" style="width: 50%; height: 50%" alt="тут должен был быть котик, но он исчез">
-    <hr>
+
+    {% for message in messages %}
+        {% if 'registration' in message.tags or 'logout' in message.tags %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endif %}
+    {% endfor %}
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(function() {
+        const alerts = document.querySelectorAll('.alert');
+        alerts.forEach(alert => {
+            alert.remove();
+        });
+    }, 5000);
+});
+</script>
 {% endblock %}
