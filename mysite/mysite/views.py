@@ -9,6 +9,8 @@ from django.http import HttpResponse
 import datetime
 import json
 from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_http_methods
 
 
 def register(request):
@@ -105,6 +107,107 @@ def remove_from_cart(request, product_id):
     response.set_cookie('cart', json.dumps(cart), max_age=3600 * 24 * 7)
 
     return response
+
+
+@csrf_exempt
+@require_http_methods(["POST"])
+def ajax_add_to_cart(request):
+    try:
+        data = json.loads(request.body)
+        product_id = data.get('product_id')
+
+        cart_json = request.COOKIES.get('cart', '{}')
+        cart = json.loads(cart_json)
+
+        product_id_str = str(product_id)
+        cart[product_id_str] = cart.get(product_id_str, 0) + 1
+
+        response_data = {
+            'status': 'success',
+            'message': 'Товар добавлен в корзину',
+            'cart': cart,
+            'cart_count': sum(cart.values())
+        }
+
+        response = JsonResponse(response_data)
+        response.set_cookie('cart', json.dumps(cart), max_age=3600 * 24 * 7, path='/')
+        return response
+
+    except Exception as e:
+        return JsonResponse({'status': 'error', 'message': str(e)})
+
+
+@csrf_exempt
+@require_http_methods(["POST"])
+def ajax_remove_from_cart(request):
+    try:
+        data = json.loads(request.body)
+        product_id = data.get('product_id')
+
+        cart_json = request.COOKIES.get('cart', '{}')
+        cart = json.loads(cart_json)
+
+        product_id_str = str(product_id)
+        if product_id_str in cart:
+            del cart[product_id_str]
+
+        response_data = {
+            'status': 'success',
+            'message': 'Товар удален из корзины',
+            'cart': cart,
+            'cart_count': sum(cart.values())
+        }
+
+        response = JsonResponse(response_data)
+        response.set_cookie('cart', json.dumps(cart), max_age=3600 * 24 * 7, path='/')
+        return response
+
+    except Exception as e:
+        return JsonResponse({'status': 'error', 'message': str(e)})
+
+
+@require_http_methods(["GET"])
+def ajax_get_products(request):
+    from catalog.models import Product
+    from django.core.paginator import Paginator
+    from django.core import serializers
+    from django.db.models import Q
+
+    page = int(request.GET.get('page', 1))
+    sort_by = request.GET.get('sort', 'name')
+    search_query = request.GET.get('search', '')
+
+    products = Product.objects.all()
+
+    if search_query:
+        products = products.filter(
+            Q(name__icontains=search_query) |
+            Q(description__icontains=search_query)
+        )
+
+    products = products.order_by(sort_by)
+
+    paginator = Paginator(products, 9)
+    try:
+        products_page = paginator.page(page)
+    except:
+        products_page = paginator.page(1)
+
+    data = serializers.serialize('json', products_page)
+
+    return JsonResponse({
+        'products': data,
+        'pagination': {
+            'current_page': products_page.number,
+            'total_pages': paginator.num_pages,
+            'has_previous': products_page.has_previous(),
+            'has_next': products_page.has_next(),
+        }
+    })
+
+
+def product_list_ajax(request):
+    return render(request, 'catalog/product_list_ajax.html')
 
 
 class CustomLogoutView(View):

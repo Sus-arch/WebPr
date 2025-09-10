@@ -1,0 +1,288 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Каталог товаров</h2>
+        <div>
+            <span class="badge bg-primary cart-count" style="display: none;">0</span>
+            <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#cartModal">
+                <i class="bi bi-cart"></i> Корзина
+            </button>
+        </div>
+    </div>
+    
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="input-group">
+                        <input type="text" id="search-input" class="form-control" placeholder="Поиск товаров...">
+                        <button class="btn btn-primary" id="search-btn">
+                            <i class="bi bi-search"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <select id="sort-select" class="form-select">
+                        <option value="name">По названию (А-Я)</option>
+                        <option value="-name">По названию (Я-А)</option>
+                        <option value="price">По цене (возрастание)</option>
+                        <option value="-price">По цене (убывание)</option>
+                        <option value="created_at">Новые сначала</option>
+                        <option value="-created_at">Старые сначала</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row" id="products-container">
+        <div class="col-12 text-center">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Загрузка...</span>
+            </div>
+            <p class="mt-2">Загрузка товаров...</p>
+        </div>
+    </div>
+    
+    <nav aria-label="Page navigation" class="mt-4">
+        <ul class="pagination justify-content-center" id="pagination">
+        </ul>
+    </nav>
+</div>
+
+<div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="cartModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="cartModalLabel">Корзина покупок</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="cart-content">
+                    <div class="text-center">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Загрузка...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Продолжить покупки</button>
+                <button type="button" class="btn btn-primary" id="checkout-btn">Оформить заказ</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+let currentPage = 1;
+let currentSort = 'name';
+let currentSearch = '';
+
+document.addEventListener('DOMContentLoaded', function() {
+    loadProducts();
+    
+    document.getElementById('search-btn').addEventListener('click', function() {
+        currentSearch = document.getElementById('search-input').value;
+        currentPage = 1;
+        loadProducts();
+    });
+    
+    document.getElementById('search-input').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            currentSearch = this.value;
+            currentPage = 1;
+            loadProducts();
+        }
+    });
+    
+    document.getElementById('sort-select').addEventListener('change', function() {
+        currentSort = this.value;
+        currentPage = 1;
+        loadProducts();
+    });
+    
+    document.getElementById('checkout-btn').addEventListener('click', function() {
+        alert('Функция оформления заказа будет реализована позже');
+    });
+    
+    const cartModal = document.getElementById('cartModal');
+    if (cartModal) {
+        cartModal.addEventListener('show.bs.modal', function() {
+            loadCartContent();
+        });
+    }
+});
+
+function loadProducts() {
+    const container = document.getElementById('products-container');
+    const pagination = document.getElementById('pagination');
+    
+    container.innerHTML = `
+        <div class="col-12 text-center">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Загрузка...</span>
+            </div>
+            <p class="mt-2">Загрузка товаров...</p>
+        </div>
+    `;
+    pagination.innerHTML = '';
+    
+    const url = new URL('/ajax/get-products/', window.location.origin);
+    url.searchParams.append('page', currentPage);
+    url.searchParams.append('sort', currentSort);
+    if (currentSearch) {
+        url.searchParams.append('search', currentSearch);
+    }
+    
+    ajaxRequest(
+        url.toString(),
+        'GET',
+        null,
+        function(data) {
+            try {
+                container.innerHTML = '';
+                
+                if (data.products && data.products.length > 0) {
+                    const products = JSON.parse(data.products);
+                    
+                    if (products.length === 0) {
+                        container.innerHTML = `
+                            <div class="col-12">
+                                <div class="alert alert-info text-center">
+                                    Товары не найдены. Попробуйте изменить параметры поиска.
+                                </div>
+                            </div>
+                        `;
+                        return;
+                    }
+                    
+                    products.forEach(product => {
+                        const fields = product.fields;
+                        const productId = product.pk;
+                        const inStock = fields.in_stock !== undefined ? fields.in_stock : true;
+                        
+                        const col = document.createElement('div');
+                        col.className = 'col-md-4 mb-4';
+                        col.innerHTML = `
+                            <div class="card h-100 product-card">
+                                <div class="card-body">
+                                    <h5 class="card-title">${fields.name}</h5>
+                                    <p class="card-text text-muted">${fields.description || 'Описание отсутствует'}</p>
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <span class="h5 text-primary">${fields.price} руб.</span>
+                                        ${inStock ? 
+                                            '<span class="badge bg-success">В наличии</span>' : 
+                                            '<span class="badge bg-danger">Нет в наличии</span>'}
+                                    </div>
+                                </div>
+                                <div class="card-footer bg-transparent">
+                                    ${inStock ? 
+                                        `<button class="btn btn-primary w-100 add-to-cart" data-product-id="${productId}">
+                                            <i class="bi bi-cart-plus"></i> Добавить в корзину
+                                        </button>` :
+                                        `<button class="btn btn-outline-secondary w-100" disabled>
+                                            <i class="bi bi-cart-x"></i> Нет в наличии
+                                        </button>`
+                                    }
+                                </div>
+                            </div>
+                        `;
+                        
+                        container.appendChild(col);
+                    });
+                    
+                    if (data.pagination) {
+                        renderPagination(data.pagination);
+                    }
+                    
+                    document.querySelectorAll('.add-to-cart').forEach(button => {
+                        button.addEventListener('click', function() {
+                            const productId = this.getAttribute('data-product-id');
+                            addToCart(productId);
+                        });
+                    });
+                    
+                } else {
+                    container.innerHTML = `
+                        <div class="col-12">
+                            <div class="alert alert-info text-center">
+                                Товаров пока нет.
+                            </div>
+                        </div>
+                    `;
+                }
+            } catch (e) {
+                console.error('Error loading products:', e);
+                container.innerHTML = `
+                    <div class="col-12">
+                        <div class="alert alert-danger text-center">
+                            Ошибка загрузки товаров. Попробуйте обновить страницу.
+                        </div>
+                    </div>
+                `;
+            }
+        },
+        function(error) {
+            console.error('Error:', error);
+            container.innerHTML = `
+                <div class="col-12">
+                    <div class="alert alert-danger text-center">
+                        Ошибка загрузки товаров. Проверьте подключение к интернету.
+                    </div>
+                </div>
+            `;
+        }
+    );
+}
+
+function renderPagination(paginationData) {
+    const pagination = document.getElementById('pagination');
+    pagination.innerHTML = '';
+    
+    const { current_page, total_pages, has_previous, has_next } = paginationData;
+    
+    if (has_previous) {
+        const li = document.createElement('li');
+        li.className = 'page-item';
+        li.innerHTML = `
+            <a class="page-link" href="#" data-page="${current_page - 1}">
+                <i class="bi bi-chevron-left"></i>
+            </a>
+        `;
+        pagination.appendChild(li);
+    }
+    
+    for (let i = 1; i <= total_pages; i++) {
+        const li = document.createElement('li');
+        li.className = `page-item ${i === current_page ? 'active' : ''}`;
+        li.innerHTML = `<a class="page-link" href="#" data-page="${i}">${i}</a>`;
+        pagination.appendChild(li);
+    }
+    
+    if (has_next) {
+        const li = document.createElement('li');
+        li.className = 'page-item';
+        li.innerHTML = `
+            <a class="page-link" href="#" data-page="${current_page + 1}">
+                <i class="bi bi-chevron-right"></i>
+            </a>
+        `;
+        pagination.appendChild(li);
+    }
+    
+    pagination.querySelectorAll('.page-link').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            currentPage = parseInt(this.getAttribute('data-page'));
+            loadProducts();
+            // Прокручиваем к верху страницы
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    });
+}
+</script>
+{% endblock %}
