@@ -41,4 +41,7 @@ urlpatterns = [
     path('set-cookie/', views.set_cookie, name='set_cookie'),
     path('get-cookie/', views.get_cookie, name='get_cookie'),
     path('delete-cookie/', views.delete_cookie, name='delete_cookie'),
+    path('cart/', views.cart_view, name='cart'),
+    path('cart/add/<int:product_id>/', views.add_to_cart, name='add_to_cart'),
+    path('cart/remove/<int:product_id>/', views.remove_from_cart, name='remove_from_cart'),
 ]

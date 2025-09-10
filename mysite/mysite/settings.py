@@ -65,7 +65,8 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.auth.middleware.RemoteUserMiddleware',
-    'mysite.middleware.basicauth.BasicAuthMiddleware'
+    'mysite.middleware.basicauth.BasicAuthMiddleware',
+    'mysite.middleware.cookie_middleware.CookieMiddleware',
 ]
 
 ROOT_URLCONF = 'mysite.urls'

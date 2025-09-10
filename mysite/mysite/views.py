@@ -7,6 +7,8 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_protect
 from django.http import HttpResponse
 import datetime
+import json
+from django.http import JsonResponse
 
 
 def register(request):
@@ -29,24 +31,19 @@ def register(request):
 
 
 def cookie_demo(request):
-    # Чтение куки
     visit_count = int(request.COOKIES.get('visit_count', 0))
     last_visit = request.COOKIES.get('last_visit', 'Никогда')
 
-    # Увеличение счетчика посещений
     visit_count += 1
 
-    # Установка текущего времени как времени последнего посещения
     now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-    # Создание ответа
     response = render(request, 'cookie_demo.html', {
         'visit_count': visit_count,
         'last_visit': last_visit,
         'current_time': now,
     })
 
-    # Установка куки
     response.set_cookie('visit_count', visit_count, max_age=3600 * 24 * 30)  # 30 дней
     response.set_cookie('last_visit', now, max_age=3600 * 24 * 30)
 
@@ -54,7 +51,6 @@ def cookie_demo(request):
 
 
 def set_cookie(request):
-    # Установка простой куки
     response = HttpResponse("Куки установлены!")
     response.set_cookie('test_cookie', 'test_value', max_age=3600)
     response.set_cookie('user_preference', 'dark_theme', max_age=3600 * 24 * 7)
@@ -62,7 +58,6 @@ def set_cookie(request):
 
 
 def get_cookie(request):
-    # Чтение куки
     test_value = request.COOKIES.get('test_cookie', 'не установлено')
     preference = request.COOKIES.get('user_preference', 'не установлено')
 
@@ -70,11 +65,47 @@ def get_cookie(request):
 
 
 def delete_cookie(request):
-    # Удаление куки
     response = HttpResponse("Куки удалены!")
     response.delete_cookie('test_cookie')
     response.delete_cookie('user_preference')
     return response
+
+
+def cart_view(request):
+    cart_json = request.COOKIES.get('cart', '{}')
+    cart = json.loads(cart_json)
+
+    return render(request, 'cart.html', {'cart': cart})
+
+
+def add_to_cart(request, product_id):
+    cart_json = request.COOKIES.get('cart', '{}')
+    cart = json.loads(cart_json)
+
+    product_id_str = str(product_id)
+    cart[product_id_str] = cart.get(product_id_str, 0) + 1
+
+    response = JsonResponse({'status': 'success', 'cart': cart})
+
+    response.set_cookie('cart', json.dumps(cart), max_age=3600 * 24 * 7)
+
+    return response
+
+
+def remove_from_cart(request, product_id):
+    cart_json = request.COOKIES.get('cart', '{}')
+    cart = json.loads(cart_json)
+
+    product_id_str = str(product_id)
+    if product_id_str in cart:
+        del cart[product_id_str]
+
+    response = JsonResponse({'status': 'success', 'cart': cart})
+
+    response.set_cookie('cart', json.dumps(cart), max_age=3600 * 24 * 7)
+
+    return response
+
 
 class CustomLogoutView(View):
     @method_decorator(csrf_protect)
