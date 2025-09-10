@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>{% trans "Тестирование методов авторизации" %}</h2>
+    
+    <div class="card mt-3">
+        <div class="card-header">
+            <h4>{% trans "Формы авторизации" %}</h4>
+        </div>
+        <div class="card-body">
+            <p>{% trans "Стандартная авторизация через формы Django:" %}</p>
+            {% if user.is_authenticated %}
+            <div class="alert alert-success">
+                {% trans "Вы авторизованы как" %} <strong>{{ user.username }}</strong>
+            </div>
+            {% else %}
+            <div class="alert alert-warning">
+                {% trans "Вы не авторизованы через формы" %}
+            </div>
+            {% endif %}
+            <a href="{% url 'login' %}" class="btn btn-primary">{% trans "Войти через форму" %}</a>
+        </div>
+    </div>
+
+    <div class="card mt-3">
+        <div class="card-header">
+            <h4>{% trans "HTTP Basic Auth" %}</h4>
+        </div>
+        <div class="card-body">
+            <p>{% trans "Проверка HTTP Basic Authentication:" %}</p>
+            <div class="mb-3">
+                <button onclick="testBasicAuth()" class="btn btn-info">{% trans "Тестировать Basic Auth" %}</button>
+            </div>
+            <div id="basicAuthResult"></div>
+        </div>
+    </div>
+
+    <div class="card mt-3">
+        <div class="card-header">
+            <h4>{% trans "HTTPS соединение" %}</h4>
+        </div>
+        <div class="card-body">
+            <p>{% trans "Статус HTTPS соединения:" %}</p>
+            <div id="httpsStatus" class="alert alert-info">
+                {% trans "Проверка..." %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Проверка статуса HTTPS
+if (window.location.protocol === 'https:') {
+    document.getElementById('httpsStatus').className = 'alert alert-success';
+    document.getElementById('httpsStatus').innerHTML = '{% trans "Подключение защищено HTTPS" %}';
+} else {
+    document.getElementById('httpsStatus').className = 'alert alert-warning';
+    document.getElementById('httpsStatus').innerHTML = '{% trans "Подключение не защищено HTTPS" %}';
+}
+
+// Тестирование Basic Auth
+function testBasicAuth() {
+    fetch('/api/user-info/', {
+        headers: {
+            'Authorization': 'Basic ' + btoa(prompt('{% trans "Введите логин:пароль" %}'))
+        }
+    })
+    .then(response => {
+        if (response.ok) {
+            return response.json();
+        } else {
+            throw new Error('{% trans "Ошибка авторизации" %}');
+        }
+    })
+    .then(data => {
+        document.getElementById('basicAuthResult').className = 'alert alert-success';
+        document.getElementById('basicAuthResult').innerHTML = 
+            '{% trans "Успешная авторизация! Пользователь:" %} ' + data.username;
+    })
+    .catch(error => {
+        document.getElementById('basicAuthResult').className = 'alert alert-danger';
+        document.getElementById('basicAuthResult').innerHTML = error.message;
+    });
+}
+</script>
+{% endblock %}

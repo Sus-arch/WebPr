@@ -20,6 +20,9 @@ from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from django.urls import path, include
 from . import views
+from . import api
+from django.views.generic import TemplateView
+
 
 urlpatterns = [
     path('i18n/', include('django.conf.urls.i18n')),
@@ -31,4 +34,7 @@ urlpatterns = [
     path('accounts/logout/', views.CustomLogoutView.as_view(), name='logout'),
     path('accounts/register/', views.register, name='register'),
     path('accounts/password_reset/', auth_views.PasswordResetView.as_view(), name='password_reset'),
+    path('api/products/', api.api_products, name='api_products'),
+    path('api/user-info/', api.api_user_info, name='api_user_info'),
+path('auth-test/', TemplateView.as_view(template_name='auth_test.html'), name='auth_test'),
 ]
