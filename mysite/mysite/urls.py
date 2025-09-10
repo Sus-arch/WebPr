@@ -36,5 +36,9 @@ urlpatterns = [
     path('accounts/password_reset/', auth_views.PasswordResetView.as_view(), name='password_reset'),
     path('api/products/', api.api_products, name='api_products'),
     path('api/user-info/', api.api_user_info, name='api_user_info'),
-path('auth-test/', TemplateView.as_view(template_name='auth_test.html'), name='auth_test'),
+    path('auth-test/', TemplateView.as_view(template_name='auth_test.html'), name='auth_test'),
+    path('cookie-demo/', views.cookie_demo, name='cookie_demo'),
+    path('set-cookie/', views.set_cookie, name='set_cookie'),
+    path('get-cookie/', views.get_cookie, name='get_cookie'),
+    path('delete-cookie/', views.delete_cookie, name='delete_cookie'),
 ]

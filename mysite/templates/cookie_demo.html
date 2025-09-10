@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>{% trans "Демонстрация работы с куки" %}</h2>
+    
+    <div class="card mt-3">
+        <div class="card-header">
+            <h4>{% trans "Информация о посещениях" %}</h4>
+        </div>
+        <div class="card-body">
+            <p>{% trans "Количество посещений:" %} <strong>{{ visit_count }}</strong></p>
+            <p>{% trans "Последнее посещение:" %} <strong>{{ last_visit }}</strong></p>
+            <p>{% trans "Текущее время:" %} <strong>{{ current_time }}</strong></p>
+        </div>
+    </div>
+    
+    <div class="card mt-3">
+        <div class="card-header">
+            <h4>{% trans "Управление куки" %}</h4>
+        </div>
+        <div class="card-body">
+            <div class="btn-group" role="group">
+                <a href="{% url 'set_cookie' %}" class="btn btn-primary">{% trans "Установить куки" %}</a>
+                <a href="{% url 'get_cookie' %}" class="btn btn-info">{% trans "Прочитать куки" %}</a>
+                <a href="{% url 'delete_cookie' %}" class="btn btn-danger">{% trans "Удалить куки" %}</a>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+// JavaScript для работы с куки
+document.addEventListener('DOMContentLoaded', function() {
+    // Функция для создания куки
+    function setCookie(name, value, days) {
+        let expires = "";
+        if (days) {
+            let date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            expires = "; expires=" + date.toUTCString();
+        }
+        document.cookie = name + "=" + (value || "") + expires + "; path=/";
+    }
+    
+    // Функция для чтения куки
+    function getCookie(name) {
+        let nameEQ = name + "=";
+        let ca = document.cookie.split(';');
+        for(let i = 0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+            if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+        }
+        return null;
+    }
+    
+    // Функция для удаления куки
+    function eraseCookie(name) {
+        document.cookie = name + '=; Max-Age=-99999999; path=/';
+    }
+    
+    // Пример использования
+    console.log("Все куки:", document.cookie);
+    console.log("Куки visit_count:", getCookie('visit_count'));
+});
+</script>
+{% endblock %}
