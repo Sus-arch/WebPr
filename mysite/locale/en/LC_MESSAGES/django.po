@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-09 23:50+0300\n"
+"POT-Creation-Date: 2025-09-10 22:00+0300\n"
 "PO-Revision-Date: 2025-09-09 23:50+0300\n"
 "Last-Translator: Your Name <email@address>\n"
 "Language-Team: English <en@li.org>\n"
@@ -30,15 +30,19 @@ msgstr "Description"
 msgid "Цена"
 msgstr "Price"
 
-#: .\catalog\forms.py:25
+#: .\catalog\forms.py:15 .\catalog\models.py:8
+msgid "Есть в наличии"
+msgstr "In stock"
+
+#: .\catalog\forms.py:27
 msgid "Цена не может быть отрицательной."
 msgstr "Price cannot be negative."
 
-#: .\catalog\models.py:15
+#: .\catalog\models.py:16
 msgid "Товар"
 msgstr "Product"
 
-#: .\catalog\models.py:16
+#: .\catalog\models.py:17
 msgid "Товары"
 msgstr "Products"
 
@@ -61,11 +65,11 @@ msgstr "Product \"%(name)s\" has been successfully updated!"
 msgid "Товар \"%(name)s\" успешно удален!"
 msgstr "Product \"%(name)s\" has been successfully deleted!"
 
-#: .\mysite\settings.py:123
+#: .\mysite\settings.py:125
 msgid "Russian"
 msgstr "Russian"
 
-#: .\mysite\settings.py:124
+#: .\mysite\settings.py:126
 msgid "English"
 msgstr "English"
 
@@ -86,56 +90,75 @@ msgid "Вы уверены, что хотите удалить товар"
 msgstr "Are you sure you want to delete the product"
 
 #: .\templates\catalog\product_confirm_delete.html:17
+#: .\templates\catalog\product_form.html:46
 msgid "Отмена"
 msgstr "Cancel"
 
 #: .\templates\catalog\product_confirm_delete.html:18
-#: .\templates\catalog\product_detail.html:30
+#: .\templates\catalog\product_detail.html:55
 #: .\templates\catalog\product_list.html:33
 msgid "Удалить"
 msgstr "Delete"
 
-#: .\templates\catalog\product_detail.html:10
-#: .\templates\includes\header.html:8
+#: .\templates\catalog\product_detail.html:9 .\templates\includes\header.html:8
 msgid "Каталог"
 msgstr "Catalog"
 
-#: .\templates\catalog\product_detail.html:27
-msgid "Редактировать"
-msgstr "Edit"
+#: .\templates\catalog\product_detail.html:22
+msgid "руб."
+msgstr "rub."
 
-#: .\templates\catalog\product_detail.html:36
-msgid "Добавлено"
+#: .\templates\catalog\product_detail.html:28
+msgid "В наличии"
+msgstr "In stock"
+
+#: .\templates\catalog\product_detail.html:30
+msgid "Нет в наличии"
+msgstr "Not in stock"
+
+#: .\templates\catalog\product_detail.html:37
+#, fuzzy
+#| msgid "Добавлено"
+msgid "Добавлено:"
 msgstr "Added"
 
-#: .\templates\catalog\product_detail.html:36
-msgid "Обновлено"
+#: .\templates\catalog\product_detail.html:37
+#, fuzzy
+#| msgid "Обновлено"
+msgid "Обновлено:"
 msgstr "Updated"
 
-#: .\templates\catalog\product_detail.html:43
-msgid "Действия"
-msgstr "Actions"
+#: .\templates\catalog\product_detail.html:44
+#, fuzzy
+#| msgid "Добавить товар"
+msgid "Действия с товаром"
+msgstr "Add Product"
 
-#: .\templates\catalog\product_detail.html:47
+#: .\templates\catalog\product_detail.html:49
 msgid "Все товары"
 msgstr "All Products"
 
-#: .\templates\catalog\product_detail.html:50
+#: .\templates\catalog\product_detail.html:52
+msgid "Редактировать"
+msgstr "Edit"
+
+#: .\templates\catalog\product_detail.html:58
 msgid "Добавить новый"
 msgstr "Add New"
 
-#: .\templates\catalog\product_form.html:11
-msgid "Редактировать товар"
-msgstr "Edit Product"
-
-#: .\templates\catalog\product_form.html:11
-#: .\templates\catalog\product_list.html:9
-msgid "Добавить товар"
-msgstr "Add Product"
+#: .\templates\catalog\product_form.html:47
+#, fuzzy
+#| msgid "Изменить"
+msgid "Сохранить"
+msgstr "Change"
 
 #: .\templates\catalog\product_list.html:7
 msgid "Каталог товаров"
 msgstr "Product Catalog"
+
+#: .\templates\catalog\product_list.html:9
+msgid "Добавить товар"
+msgstr "Add Product"
 
 #: .\templates\catalog\product_list.html:22
 #, python-format
@@ -186,3 +209,9 @@ msgstr "Home"
 #: .\templates\includes\language_switcher.html:6
 msgid "Переключение языка"
 msgstr "Language switching"
+
+#~ msgid "Действия"
+#~ msgstr "Actions"
+
+#~ msgid "Редактировать товар"
+#~ msgstr "Edit Product"
